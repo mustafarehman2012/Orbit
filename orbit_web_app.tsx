@@ -1,14 +1,14 @@
-import React, { useState, useRef } from 'react';
+import { useState, useRef } from 'react';
 import { Download, Volume2, VolumeX, Link2, Loader2, CheckCircle, AlertCircle } from 'lucide-react';
 
 // BACKEND API CONFIGURATION
-const API_BASE_URL = 'http://localhost:3001'; // Change this to your deployed backend URL
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:3001'; // Change this to your deployed backend URL
 
 const OrbitApp = () => {
   const [url, setUrl] = useState('');
   const [processing, setProcessing] = useState(false);
   const [showAdModal, setShowAdModal] = useState(false);
-  const [videoData, setVideoData] = useState(null);
+  const [videoData, setVideoData] = useState<any>(null);
   const [error, setError] = useState('');
   const [muteAudio, setMuteAudio] = useState(false);
   const [adCompleted, setAdCompleted] = useState(false);
@@ -40,7 +40,7 @@ const OrbitApp = () => {
   };
 
   // Real Backend Extraction
-  const extractVideoData = async (videoUrl) => {
+  const extractVideoData = async (videoUrl: string) => {
     setExtractionStage('Connecting to server...');
     
     try {
@@ -74,7 +74,8 @@ const OrbitApp = () => {
         directLinks: data.directLinks
       };
     } catch (err) {
-      throw new Error(err.message || 'Could not extract video. Please check the URL and try again.');
+      const error = err as Error;
+      throw new Error(error.message || 'Could not extract video. Please check the URL and try again.');
     }
   };
 
@@ -106,7 +107,8 @@ const OrbitApp = () => {
       // Trigger ad after successful extraction
       triggerRewardedAd();
     } catch (err) {
-      setError(err.message || 'Failed to extract video. Please check the URL.');
+      const error = err as Error;
+      setError(error.message || 'Failed to extract video. Please check the URL.');
       setProcessing(false);
       setExtractionStage('');
     }
@@ -165,7 +167,8 @@ const OrbitApp = () => {
       }, 500);
       
     } catch (err) {
-      setError('Download failed: ' + err.message);
+      const error = err as Error;
+      setError('Download failed: ' + error.message);
       setDownloading(false);
     }
   };
@@ -280,7 +283,7 @@ const OrbitApp = () => {
                   alt="Video thumbnail"
                   className="w-full h-48 object-cover"
                   onError={(e) => {
-                    e.target.src = 'https://via.placeholder.com/640x360/1a1a2e/00ff88?text=Video+Preview';
+                    (e.target as HTMLImageElement).src = 'https://via.placeholder.com/640x360/1a1a2e/00ff88?text=Video+Preview';
                   }}
                 />
                 <div className="absolute bottom-2 right-2 bg-black/70 px-2 py-1 rounded text-xs">
