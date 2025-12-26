@@ -430,7 +430,7 @@ const OrbitApp = () => {
       {/* Footer */}
       <footer className="border-t border-purple-500/20 mt-20 py-8">
         <div className="container mx-auto px-4 text-center text-sm text-gray-400">
-          <p className="mb-2">© 2024 Orbit. All rights reserved.</p>
+          <p className="mb-2">© 2025 Orbit. All rights reserved.</p>
           <p className="text-xs">
             This tool is for personal use only. Respect copyright and platform terms.
           </p>
